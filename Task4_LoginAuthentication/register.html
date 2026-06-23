@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>AuthSphere — Create Account</title>
+  <link rel="stylesheet" href="style.css"/>
+</head>
+<body data-page="register">
+
+  <canvas id="ptc"></canvas>
+  <div class="blobs" aria-hidden="true">
+    <div class="blob b1"></div>
+    <div class="blob b2"></div>
+    <div class="blob b3"></div>
+  </div>
+  <div id="toast-root"></div>
+
+  <div class="page-wrap">
+    <main class="auth-scene">
+      <div class="auth-card glass-card">
+
+        <!-- Brand emblem -->
+        <div class="auth-emblem">
+          <div class="hex-ring-outer">
+            <svg class="hspin" viewBox="0 0 78 78" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <polygon
+                points="39,4 73,21.5 73,56.5 39,74 5,56.5 5,21.5"
+                stroke="url(#hg2)"
+                stroke-width="1.5"
+                stroke-dasharray="6 4"
+                fill="none"/>
+              <defs>
+                <linearGradient id="hg2" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stop-color="#10B981"/>
+                  <stop offset="100%" stop-color="#FBBF24"/>
+                </linearGradient>
+              </defs>
+            </svg>
+            <div class="hex-core">🛡️</div>
+          </div>
+          <div class="brand-name">AuthSphere</div>
+          <div class="brand-tag">Create Your Account</div>
+        </div>
+
+        <!-- Card header -->
+        <div class="auth-head">
+          <h2>Create an account</h2>
+          <p>Join AuthSphere — it's free and takes 30 seconds</p>
+        </div>
+
+        <!-- Registration form -->
+        <form id="reg-form" novalidate>
+
+          <!-- Name -->
+          <div class="field">
+            <label for="reg-name">Full name</label>
+            <div class="iw">
+              <span class="ii" aria-hidden="true">👤</span>
+              <input
+                type="text"
+                id="reg-name"
+                placeholder="Jane Doe"
+                autocomplete="name"
+                required/>
+            </div>
+            <div class="ferr" id="name-err"></div>
+          </div>
+
+          <!-- Email -->
+          <div class="field">
+            <label for="reg-email">Email address</label>
+            <div class="iw">
+              <span class="ii" aria-hidden="true">📧</span>
+              <input
+                type="email"
+                id="reg-email"
+                placeholder="you@example.com"
+                autocomplete="email"
+                required/>
+            </div>
+            <div class="ferr" id="email-err"></div>
+          </div>
+
+          <!-- Password -->
+          <div class="field">
+            <label for="reg-pw">Password</label>
+            <div class="iw">
+              <span class="ii" aria-hidden="true">🔑</span>
+              <input
+                type="password"
+                id="reg-pw"
+                placeholder="Create a strong password"
+                autocomplete="new-password"
+                required/>
+              <button type="button" class="ia" id="pw-toggle" aria-label="Toggle password visibility">👁️</button>
+            </div>
+            <!-- Strength meter -->
+            <div class="sw">
+              <div class="sbars" id="pw-bars">
+                <div class="sbar"></div>
+                <div class="sbar"></div>
+                <div class="sbar"></div>
+                <div class="sbar"></div>
+                <div class="sbar"></div>
+              </div>
+              <div class="stxt" id="pw-strength-txt"></div>
+            </div>
+            <div class="ferr" id="pw-err"></div>
+          </div>
+
+          <!-- Confirm Password -->
+          <div class="field">
+            <label for="reg-cpw">Confirm password</label>
+            <div class="iw">
+              <span class="ii" aria-hidden="true">🔐</span>
+              <input
+                type="password"
+                id="reg-cpw"
+                placeholder="Repeat your password"
+                autocomplete="new-password"
+                required/>
+              <button type="button" class="ia" id="cpw-toggle" aria-label="Toggle confirm password visibility">👁️</button>
+            </div>
+            <div class="ferr" id="cpw-err"></div>
+          </div>
+
+          <button type="submit" class="btn-primary" id="reg-btn">
+            Create Account
+          </button>
+        </form>
+
+        <div class="auth-switch">
+          Already have an account? <a href="index.html">Sign in</a>
+        </div>
+
+      </div>
+    </main>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

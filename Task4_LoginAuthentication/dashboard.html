@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>AuthSphere — Dashboard</title>
+  <link rel="stylesheet" href="style.css"/>
+</head>
+<body data-page="dashboard">
+
+  <canvas id="ptc"></canvas>
+  <div class="blobs" aria-hidden="true">
+    <div class="blob b1"></div>
+    <div class="blob b2"></div>
+    <div class="blob b3"></div>
+  </div>
+  <div id="toast-root"></div>
+
+  <div class="page-wrap">
+
+    <!-- ── Top Navigation Bar ────────────────────────────── -->
+    <header class="topbar">
+
+      <!-- Brand -->
+      <div class="tb-brand">
+        <div class="tb-hex">🔐</div>
+        <span class="tb-name">AuthSphere</span>
+      </div>
+
+      <!-- Right controls -->
+      <div class="tb-right">
+
+        <!-- Session timer -->
+        <div class="session-badge" title="Your current session duration">
+          <div class="sdot"></div>
+          <span class="session-label">Session Active:</span>
+          <span id="session-time">00m 00s</span>
+        </div>
+
+        <!-- Theme switcher -->
+        <div class="theme-dots" title="Switch theme">
+          <div class="theme-dot td-emerald active" data-theme="emerald" title="Emerald Shield"></div>
+          <div class="theme-dot td-red"     data-theme="red"     title="Cyber Red"></div>
+          <div class="theme-dot td-blue"    data-theme="blue"    title="Ocean Blue"></div>
+          <div class="theme-dot td-orange"  data-theme="orange"  title="Sunset Orange"></div>
+        </div>
+
+        <!-- User pill -->
+        <div class="user-pill">
+          <div class="avatar-sm" id="avatar-sm">??</div>
+          <span class="up-name" id="up-name">User</span>
+        </div>
+
+        <!-- Logout -->
+        <button class="btn-logout" id="logout-btn" type="button">
+          Sign Out
+        </button>
+
+      </div>
+    </header>
+
+    <!-- ── Dashboard Main ────────────────────────────────── -->
+    <main class="dash-main">
+
+      <!-- Welcome Banner -->
+      <section class="welcome-banner glass-card">
+        <div class="wb-text">
+          <h1>Welcome back, <span class="wb-name" id="wb-name">Agent</span> 👋</h1>
+          <p>Your vault is secured. Here's your security overview.</p>
+          <p class="wb-date" id="wb-date"></p>
+        </div>
+        <div class="avatar-lg" id="avatar-lg">??</div>
+      </section>
+
+      <!-- Stats Cards -->
+      <section class="stats-grid" aria-label="Account statistics">
+
+        <div class="stat-card glass-card">
+          <div class="stat-icon">🔑</div>
+          <div class="stat-value" id="stat-logins">0</div>
+          <div class="stat-label">Total Logins</div>
+          <div class="stat-sub">Lifetime sign-ins</div>
+        </div>
+
+        <div class="stat-card glass-card">
+          <div class="stat-icon">📅</div>
+          <div class="stat-value" id="stat-age">—</div>
+          <div class="stat-label">Account Age</div>
+          <div class="stat-sub">Since registration</div>
+        </div>
+
+        <div class="stat-card glass-card">
+          <div class="stat-icon">🛡️</div>
+          <div class="stat-value" id="stat-score">0%</div>
+          <div class="stat-label">Security Score</div>
+          <div class="stat-sub">Calculated in real-time</div>
+        </div>
+
+        <div class="stat-card glass-card">
+          <div class="stat-icon">🔥</div>
+          <div class="stat-value" id="stat-streak">0 days</div>
+          <div class="stat-label">Login Streak</div>
+          <div class="stat-sub">Consecutive days active</div>
+        </div>
+
+      </section>
+
+      <!-- Bottom Panels -->
+      <section class="bottom-grid">
+
+        <!-- ── Panel 1: Security Score Ring + Streak ─────── -->
+        <div class="dash-panel glass-card">
+          <h2 class="panel-title">Security Overview</h2>
+
+          <div class="ring-row">
+            <!-- SVG Ring -->
+            <div class="ring-box">
+              <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                  <linearGradient id="rGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                    <stop offset="0%" stop-color="#10B981"/>
+                    <stop offset="100%" stop-color="#FBBF24"/>
+                  </linearGradient>
+                </defs>
+                <circle class="ring-track" cx="50" cy="50" r="45"/>
+                <circle class="ring-fill"  cx="50" cy="50" r="45"/>
+              </svg>
+              <div class="ring-center">
+                <div class="ring-num" id="ring-score-num">0</div>
+                <div class="ring-lbl">/ 100</div>
+              </div>
+            </div>
+
+            <!-- Score factor bars -->
+            <div class="score-bars">
+              <div>
+                <div class="sb-labels">
+                  <span>Password strength</span>
+                  <span id="sb-pw-pct">0%</span>
+                </div>
+                <div class="sb-track"><div class="sb-fill" id="sb-pw"></div></div>
+              </div>
+              <div>
+                <div class="sb-labels">
+                  <span>Login streak</span>
+                  <span id="sb-str-pct">0%</span>
+                </div>
+                <div class="sb-track"><div class="sb-fill" id="sb-str"></div></div>
+              </div>
+              <div>
+                <div class="sb-labels">
+                  <span>Activity score</span>
+                  <span id="sb-act-pct">0%</span>
+                </div>
+                <div class="sb-track"><div class="sb-fill" id="sb-act"></div></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Streak callout -->
+          <div class="streak-row">
+            <div class="streak-flame">🔥</div>
+            <div class="streak-num" id="streak-num">0</div>
+            <div>
+              <div class="streak-title">Day Login Streak</div>
+              <div class="streak-sub">Log in every day to keep it going!</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── Panel 2: Activity Timeline ────────────────── -->
+        <div class="dash-panel glass-card">
+          <h2 class="panel-title">Activity Timeline</h2>
+          <div id="timeline">
+            <p class="tl-empty">Loading activity...</p>
+          </div>
+        </div>
+
+        <!-- ── Panel 3: Achievement Badges ───────────────── -->
+        <div class="dash-panel glass-card">
+          <h2 class="panel-title">Achievement Badges</h2>
+          <div class="badges-grid" id="badges-grid">
+            <!-- Populated by JS -->
+          </div>
+        </div>
+
+        <!-- ── Panel 4: Security Tips ─────────────────────── -->
+        <div class="dash-panel glass-card">
+          <h2 class="panel-title">Security Tips</h2>
+          <div id="tip-card" class="tip-card">
+            <!-- Populated by JS -->
+          </div>
+          <div class="tip-nav">
+            <div class="tip-dots" id="tip-dots"></div>
+            <button class="tip-next" id="tip-next" type="button">Next tip →</button>
+          </div>
+        </div>
+
+      </section>
+    </main>
+  </div>
+
+  <script src="script.js"></script>
+
+  <!-- Wire up score bars with percentages after JS loads -->
+  <script>
+    // Patch animateBars to also update pct labels (dashboard-only enhancement)
+    const _origAB = window.animateBars;
+    document.addEventListener('DOMContentLoaded', () => {
+      // Override the sb-fill widths observer approach — simpler patch
+      const observer = new MutationObserver(() => {
+        ['pw','str','act'].forEach(k => {
+          const fill = document.getElementById(`sb-${k}`);
+          const pct  = document.getElementById(`sb-${k}-pct`);
+          if (fill && pct && fill.style.width) {
+            pct.textContent = fill.style.width;
+          }
+        });
+      });
+      document.querySelectorAll('.sb-fill').forEach(el => {
+        observer.observe(el, { attributes: true, attributeFilter: ['style'] });
+      });
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>AuthSphere — Sign In</title>
+  <link rel="stylesheet" href="style.css"/>
+</head>
+<body data-page="login">
+
+  <!-- Animated background layers -->
+  <canvas id="ptc"></canvas>
+  <div class="blobs" aria-hidden="true">
+    <div class="blob b1"></div>
+    <div class="blob b2"></div>
+    <div class="blob b3"></div>
+  </div>
+
+  <!-- Toast root (JS populates this) -->
+  <div id="toast-root"></div>
+
+  <div class="page-wrap">
+    <main class="auth-scene">
+      <div class="auth-card glass-card">
+
+        <!-- Brand emblem -->
+        <div class="auth-emblem">
+          <div class="hex-ring-outer">
+            <!-- Spinning dashed ring -->
+            <svg class="hspin" viewBox="0 0 78 78" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <polygon
+                points="39,4 73,21.5 73,56.5 39,74 5,56.5 5,21.5"
+                stroke="url(#hg1)"
+                stroke-width="1.5"
+                stroke-dasharray="6 4"
+                fill="none"/>
+              <defs>
+                <linearGradient id="hg1" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stop-color="#10B981"/>
+                  <stop offset="100%" stop-color="#FBBF24"/>
+                </linearGradient>
+              </defs>
+            </svg>
+            <div class="hex-core">🔐</div>
+          </div>
+          <div class="brand-name">AuthSphere</div>
+          <div class="brand-tag">Secure Access Portal</div>
+        </div>
+
+        <!-- Card header -->
+        <div class="auth-head">
+          <h2>Welcome back</h2>
+          <p>Sign in to your secure vault</p>
+        </div>
+
+        <!-- Login form -->
+        <form id="login-form" novalidate>
+
+          <!-- Email field -->
+          <div class="field">
+            <label for="login-email">Email address</label>
+            <div class="iw">
+              <span class="ii" aria-hidden="true">📧</span>
+              <input
+                type="email"
+                id="login-email"
+                placeholder="you@example.com"
+                autocomplete="email"
+                required/>
+            </div>
+            <div class="ferr" id="email-err"></div>
+          </div>
+
+          <!-- Password field -->
+          <div class="field">
+            <label for="login-pw">Password</label>
+            <div class="iw">
+              <span class="ii" aria-hidden="true">🔑</span>
+              <input
+                type="password"
+                id="login-pw"
+                placeholder="Your password"
+                autocomplete="current-password"
+                required/>
+              <button type="button" class="ia" id="pw-toggle" aria-label="Toggle password visibility">👁️</button>
+            </div>
+            <div class="ferr" id="pw-err"></div>
+          </div>
+
+          <!-- Remember me -->
+          <div class="check-row">
+            <input type="checkbox" id="remember-me"/>
+            <label for="remember-me">Remember me for 30 days</label>
+          </div>
+
+          <button type="submit" class="btn-primary" id="login-btn">
+            Sign In
+          </button>
+        </form>
+
+        <div class="auth-switch">
+          Don't have an account? <a href="register.html">Create one</a>
+        </div>
+
+      </div>
+    </main>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
