@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> Calculator</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- Background Blobs -->
+    <div class="blob blob1"></div>
+    <div class="blob blob2"></div>
+    <div class="blob blob3"></div>
+
+    <div class="wrapper">
+
+        <!-- Calculator -->
+        <div class="calculator">
+
+            <div class="header">
+                <div class="logo">✨Calculator</div>
+                <div class="clock" id="clock"></div>
+            </div>
+
+            <div class="display">
+                <input type="text" id="display" readonly>
+            </div>
+
+            <div class="buttons">
+
+                <button class="operator" onclick="clearDisplay()">AC</button>
+                <button class="operator" onclick="deleteLast()">DEL</button>
+                <button class="operator" onclick="appendValue('%')">%</button>
+                <button class="operator" onclick="appendValue('/')">÷</button>
+
+                <button onclick="appendValue('7')">7</button>
+                <button onclick="appendValue('8')">8</button>
+                <button onclick="appendValue('9')">9</button>
+                <button class="operator" onclick="appendValue('*')">×</button>
+
+                <button onclick="appendValue('4')">4</button>
+                <button onclick="appendValue('5')">5</button>
+                <button onclick="appendValue('6')">6</button>
+                <button class="operator" onclick="appendValue('-')">−</button>
+
+                <button onclick="appendValue('1')">1</button>
+                <button onclick="appendValue('2')">2</button>
+                <button onclick="appendValue('3')">3</button>
+                <button class="operator" onclick="appendValue('+')">+</button>
+
+                <button onclick="appendValue('0')">0</button>
+                <button onclick="appendValue('.')">.</button>
+                <button class="equal" onclick="calculate()">=</button>
+
+            </div>
+
+            <div style="text-align:center; color:white; margin-top:20px; opacity:0.8;">
+                
+            </div>
+
+        </div>
+
+        <!-- History Section -->
+        <div class="history">
+            <h3>📜 Calculation History</h3>
+            <ul id="historyList"></ul>
+        </div>
+
+    </div>
+
+    <script src="script.js"></script>
+
+</body>
+</html>
