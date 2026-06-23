@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>TaskFlow Pro</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+</head>
+<body>
+<!-- particles -->
+<div id="particles"></div>
+
+<div class="app">
+
+<!-- ═══ HEADER ═══ -->
+<header class="header">
+  <div class="brand">
+    <div class="brand-icon">⚡</div>
+    <div>
+      <div class="brand-name">TaskFlow Pro</div>
+      <div class="brand-sub" id="hdr-date"></div>
+    </div>
+  </div>
+  <div class="header-right">
+    <button class="mood-btn active" data-mood="creative" onclick="setMood('creative',this)">🎨 Creative</button>
+    <button class="mood-btn" data-mood="focus"    onclick="setMood('focus',this)">🎯 Focus</button>
+    <button class="mood-btn" data-mood="calm"     onclick="setMood('calm',this)">🌿 Calm</button>
+    <button class="mood-btn" data-mood="happy"    onclick="setMood('happy',this)">☀️ Happy</button>
+  </div>
+</header>
+
+<!-- ═══ STATS ═══ -->
+<div class="stats-row">
+  <div class="stat-card"><span class="stat-icon">📋</span><span class="stat-val" id="s-total">0</span><span class="stat-label">Total Tasks</span></div>
+  <div class="stat-card"><span class="stat-icon">✅</span><span class="stat-val" id="s-done">0</span><span class="stat-label">Completed</span></div>
+  <div class="stat-card"><span class="stat-icon">⏳</span><span class="stat-val" id="s-pend">0</span><span class="stat-label">Pending</span></div>
+  <div class="stat-card"><span class="stat-icon">🔥</span><span class="stat-val" id="s-streak">0</span><span class="stat-label">Day Streak</span></div>
+</div>
+
+<!-- ═══ PRODUCTIVITY RING ═══ -->
+<div class="prod-card glass">
+  <div class="ring-wrap">
+    <svg class="ring-svg" viewBox="0 0 90 90">
+      <defs>
+        <linearGradient id="ringGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%" stop-color="#A855F7"/>
+          <stop offset="100%" stop-color="#06B6D4"/>
+        </linearGradient>
+      </defs>
+      <circle class="ring-bg" cx="45" cy="45" r="40"/>
+      <circle class="ring-fill" id="ring-fill" cx="45" cy="45" r="40"/>
+    </svg>
+    <div class="ring-label">
+      <span class="ring-pct" id="ring-pct">0%</span>
+      <span class="ring-sub">Score</span>
+    </div>
+  </div>
+  <div class="prod-info">
+    <h3>Daily Productivity Score</h3>
+    <p id="prod-msg">Add tasks and start completing them to build your productivity score and streak.</p>
+    <div class="streak-badge" id="streak-badge">🔥 <span id="streak-txt">0 day streak</span></div>
+  </div>
+</div>
+
+<!-- ═══ MAIN GRID ═══ -->
+<div class="main-grid">
+<div class="main-col">
+
+  <!-- ADD TASK -->
+  <div class="add-card">
+    <div class="add-top">
+      <input id="task-input" class="task-input" placeholder="What needs to be done? ✨" maxlength="140" autocomplete="off" oninput="aiHint()"/>
+      <button class="btn btn-primary" onclick="addTask()">
+        <svg width="14" height="14" viewBox="0 0 16 16"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/></svg>
+        Add
+      </button>
+    </div>
+    <div class="add-options">
+      <select id="sel-priority" class="sel">
+        <option value="low">🟢 Low</option>
+        <option value="medium" selected>🟡 Medium</option>
+        <option value="high">🔴 High</option>
+      </select>
+      <select id="sel-category" class="sel">
+        <option value="personal">👤 Personal</option>
+        <option value="work">💼 Work</option>
+        <option value="study">📚 Study</option>
+        <option value="health">💪 Health</option>
+        <option value="other">✦ Other</option>
+      </select>
+      <input id="sel-due" type="date" class="date-input" title="Due date"/>
+    </div>
+    <div class="ai-hint" id="ai-hint"><span>✨ AI</span> <span id="ai-txt">Type a task to get smart suggestions.</span></div>
+  </div>
+
+  <!-- SEARCH & FILTER -->
+  <div class="search-row">
+    <div class="search-wrap">
+      <span class="search-icon">🔍</span>
+      <input id="search-input" class="search-input" placeholder="Search tasks…" oninput="onSearch()" autocomplete="off"/>
+      <button class="search-clear-btn" id="search-clear" onclick="clearSearch()">✕</button>
+    </div>
+  </div>
+  <div class="filter-row">
+    <button class="ftab active" onclick="setFilter('all',this)">All</button>
+    <button class="ftab" onclick="setFilter('active',this)">Active</button>
+    <button class="ftab" onclick="setFilter('completed',this)">Completed</button>
+  </div>
+  <div class="cat-filter-row">
+    <button class="cftab active" onclick="setCatFilter('all',this)">All Categories</button>
+    <button class="cftab" onclick="setCatFilter('work',this)">💼 Work</button>
+    <button class="cftab" onclick="setCatFilter('study',this)">📚 Study</button>
+    <button class="cftab" onclick="setCatFilter('personal',this)">👤 Personal</button>
+    <button class="cftab" onclick="setCatFilter('health',this)">💪 Health</button>
+  </div>
+
+  <!-- PENDING PANEL -->
+  <div class="panel" style="margin-top:16px">
+    <div class="panel-hdr">
+      <div class="panel-title-row">
+        <span class="pdot pdot-p"></span>
+        <span class="panel-ttl">Pending</span>
+        <span class="panel-cnt" id="cnt-p">0</span>
+      </div>
+      <span class="drag-hint-lbl">drag to reorder</span>
+    </div>
+    <ul class="task-list" id="list-pending">
+      <li class="empty" id="empty-pending">
+        <div class="empty-art">🎯</div>
+        <p>No pending tasks.<br/>Add something above!</p>
+      </li>
+    </ul>
+  </div>
+
+  <!-- COMPLETED PANEL -->
+  <div class="panel">
+    <div class="panel-hdr">
+      <div class="panel-title-row">
+        <span class="pdot pdot-c"></span>
+        <span class="panel-ttl">Completed</span>
+        <span class="panel-cnt" id="cnt-c">0</span>
+      </div>
+      <button class="btn-clear-all" id="btn-clear" onclick="clearDone()" style="display:none">Clear all</button>
+    </div>
+    <ul class="task-list" id="list-done">
+      <li class="empty" id="empty-done">
+        <div class="empty-art">🏆</div>
+        <p>Completed tasks appear here.</p>
+      </li>
+    </ul>
+  </div>
+
+</div><!-- /main-col -->
+
+<!-- ═══ SIDEBAR ═══ -->
+<div class="sidebar">
+
+  <!-- QUOTE -->
+  <div class="quote-card">
+    <div class="quote-label">✨ Daily Motivation</div>
+    <div class="quote-txt" id="quote-txt">Loading…</div>
+    <div class="quote-author" id="quote-author"></div>
+  </div>
+
+  <!-- ACHIEVEMENTS -->
+  <div class="ach-card">
+    <div class="sidebar-ttl">🏆 Achievements</div>
+    <div class="badges" id="badges-wrap">
+      <div class="badge" id="badge-first"><div class="badge-icon">🌱</div><div class="badge-name">First Task</div></div>
+      <div class="badge" id="badge-10"><div class="badge-icon">⚡</div><div class="badge-name">10 Done</div></div>
+      <div class="badge" id="badge-master"><div class="badge-icon">👑</div><div class="badge-name">Pro Master</div></div>
+      <div class="badge" id="badge-streak"><div class="badge-icon">🔥</div><div class="badge-name">7-Day Streak</div></div>
+      <div class="badge" id="badge-100"><div class="badge-icon">💎</div><div class="badge-name">100 Tasks</div></div>
+      <div class="badge" id="badge-speed"><div class="badge-icon">🚀</div><div class="badge-name">Speed Run</div></div>
+    </div>
+  </div>
+
+  <!-- POMODORO -->
+  <div class="pomo-card">
+    <div class="sidebar-ttl">⏱ Pomodoro Timer</div>
+    <div class="pomo-display" id="pomo-display">25:00</div>
+    <div class="pomo-label" id="pomo-label">Focus Session</div>
+    <div class="pomo-controls">
+      <button class="btn btn-primary btn-sm" id="pomo-btn" onclick="togglePomo()">▶ Start</button>
+      <button class="btn btn-ghost btn-sm" onclick="resetPomo()">↺ Reset</button>
+      <button class="btn btn-ghost btn-sm" onclick="skipPomo()">⏭ Skip</button>
+    </div>
+    <div class="ambient-row">
+      <button class="amb-btn" data-sound="rain"   onclick="toggleAmb('rain',this)">🌧 Rain</button>
+      <button class="amb-btn" data-sound="forest" onclick="toggleAmb('forest',this)">🌲 Forest</button>
+      <button class="amb-btn" data-sound="coffee" onclick="toggleAmb('coffee',this)">☕ Café</button>
+    </div>
+  </div>
+
+  <!-- WEEKLY CHART -->
+  <div class="chart-card">
+    <div class="sidebar-ttl">📊 Weekly Progress</div>
+    <div class="chart-bars" id="weekly-chart"></div>
+  </div>
+
+</div><!-- /sidebar -->
+</div><!-- /main-grid -->
+</div><!-- /app -->
+
+<!-- FAB -->
+<button class="fab" onclick="focusAdd()" title="Add task">+</button>
+
+<!-- MODAL -->
+<div class="overlay" id="overlay" onclick="closeModal()">
+  <div class="modal" onclick="event.stopPropagation()">
+    <div class="modal-ttl">Edit Task</div>
+    <input id="modal-input" class="modal-input" maxlength="140"/>
+    <div class="modal-actions">
+      <button class="btn btn-ghost" onclick="closeModal()">Cancel</button>
+      <button class="btn btn-primary" onclick="saveEdit()">Save Changes</button>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+<script src="script.js"></script>
+</body>
+</html>
